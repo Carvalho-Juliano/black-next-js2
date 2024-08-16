@@ -1,11 +1,12 @@
 import { GetStaticProps, NextPage } from "next"
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode ,useEffect, useState } from "react";
 import { Col, Container, Row } from "reactstrap"
+
 
 type ApiResponse = {
   name: string
   timestamp: Date
-}
+};
 
 export const getStaticProps: GetStaticProps = async () => {
   const staticData = await fetch(`${process.env.NEXT_PUBLIC_APIURL}/api/hello`).then(res => res.json())
@@ -13,10 +14,10 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       staticData
-    },
-    revalidate: 10
+    }
   }
 }
+
 
 const Static: NextPage = (props: {
   children?: ReactNode
@@ -28,8 +29,8 @@ const Static: NextPage = (props: {
     fetchData()
   }, [])
 
-  const fetchData = async () => {
-    const data = await fetch(`/api/hello`).then(res => res.json())
+  async function fetchData() {
+    const data = await fetch("/api/hello").then(res => res.json())
     setClientSideData(data)
   }
 
@@ -42,7 +43,7 @@ const Static: NextPage = (props: {
       <Row>
         <Col>
           <h3>
-            Gerado estaticamente durante o build:
+            Gerado no servidor:
           </h3>
           <h2>
             {props.staticData?.timestamp.toString()}
@@ -51,8 +52,11 @@ const Static: NextPage = (props: {
 
         <Col>
           <h3>
-            Gerado no cliente: {clientSideData?.timestamp.toString()}
+            Gerado no cliente:
           </h3>
+          <h2>
+            {clientSideData?.timestamp.toString()}
+          </h2>
         </Col>
       </Row>
     </Container>
