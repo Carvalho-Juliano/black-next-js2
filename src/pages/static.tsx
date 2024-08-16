@@ -1,5 +1,5 @@
 import { GetStaticProps, NextPage } from "next"
-import { useEffect, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { Col, Container, Row } from "reactstrap"
 
 type ApiResponse = {
@@ -18,7 +18,10 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 }
 
-const Static: NextPage = () => {
+const Static: NextPage = (props: {
+  children?: ReactNode
+  staticData?: ApiResponse
+}) => {
   const [clientSideData, setClientSideData] = useState<ApiResponse>()
 
   useEffect(() => {
@@ -41,6 +44,9 @@ const Static: NextPage = () => {
           <h3>
             Gerado estaticamente durante o build:
           </h3>
+          <h2>
+            {props.staticData?.timestamp.toString()}
+          </h2>
         </Col>
 
         <Col>
