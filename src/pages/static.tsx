@@ -9,12 +9,17 @@ type ApiResponse = {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const staticData = await fetch(`${process.env.NEXT_PUBLIC_APIURL}/api/hello`).then(res => res.json())
+  const apiUrl = process.env.NEXT_PUBLIC_APIURL
+  if (!apiUrl) {
+    throw new Error("A variável de ambiente NEXT_PUBLIC_APIURL não está definida");
+  }
+  const staticData = await fetch(`${apiUrl}/api/hello`).then(res => res.json())
 
   return {
     props: {
       staticData
-    }
+    },
+    revalidate: 10
   }
 }
 
